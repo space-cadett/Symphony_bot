@@ -21,8 +21,9 @@ class Symphony:
         else:
             self.__processVideo(videoInfo)
 
-        return self.__queue
+        shallowCopy = self.__queue.copy()
         self.__queue.clear()
+        return shallowCopy
 
     def __processVideo(self, videoDict: dict) -> None:
         # Gets OPUS audio streams for discord.py
@@ -42,6 +43,8 @@ class Symphony:
             audioOpusFormat, key=lambda k: k['abr'], reverse=True)
 
         title = videoDict['title']
+        description = videoDict['description']
+        channelName = videoDict['uploader']
         pageURL = videoDict['webpage_url']
         streamURL = audioOpusFormat[0]['url']
         durationInSec = videoDict['duration']
@@ -49,6 +52,8 @@ class Symphony:
 
         videoInfo = {
             'title': title,
+            'description': description,
+            'channelName': channelName,
             'pageURL': pageURL,
             'streamURL': streamURL,
             'durationInSec': durationInSec,
