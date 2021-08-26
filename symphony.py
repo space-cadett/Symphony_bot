@@ -5,7 +5,9 @@ import constants
 
 class Symphony:
     def __init__(self):
-        ydlOpts = {'format': 'bestaudio'}
+        ydlOpts = {
+            'format': '251/250/249/bestaudio',
+            'quiet': True}
         self.ytdl = youtube_dl.YoutubeDL(ydlOpts)
 
         self.queue = []
@@ -22,9 +24,19 @@ class Symphony:
         return self.queue
 
     def __processVideo(self, videoDict: dict) -> None:
+        # Gets OPUS audio streams for discord.py
+        audioOpusFormat = []
+
+        for audioFormat in videoDict['formats']:
+            if audioFormat['acodec'] == 'opus':
+                audioOpusFormat.append(audioFormat)
+
+        audioOpusFormat = sorted(
+            audioOpusFormat, key=lambda k: k['format_id'], reverse=True)
+
         title = videoDict['title']
         pageURL = videoDict['webpage_url']
-        streamURL = videoDict['formats'][0]['url']
+        streamURL = audioOpusFormat[0]['url']
         durationInSec = videoDict['duration']
         thumbnailURL = videoDict['thumbnail']
 
