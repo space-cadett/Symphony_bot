@@ -41,5 +41,5 @@ class Symphony:
 
 if __name__ == "__main__":
     symphony = Symphony()
-    info = symphony.processQueue(constants.TEST_YT_URL)
-    print(info)
+    ytVid = symphony.processQueue(constants.TEST_YT_URL)
+    print(ytVid)

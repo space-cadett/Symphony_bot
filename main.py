@@ -1,9 +1,12 @@
 import discord
 from discord.ext import commands
 
+from symphony import Symphony
 import constants
 
 client = commands.Bot(command_prefix=">")
+
+symphony = Symphony()
 
 
 @client.event
@@ -12,7 +15,8 @@ async def on_ready():
 
 
 @client.command()
-async def hello(ctx):
-    await ctx.send("Hi")
+async def play(ctx, args):
+    videoInfo = symphony.processQueue(args)
+    await ctx.send(str(videoInfo))
 
 client.run(constants.TOKEN)
