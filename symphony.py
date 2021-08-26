@@ -22,6 +22,7 @@ class Symphony:
             self.__processVideo(videoInfo)
 
         return self.__queue
+        self.__queue.clear()
 
     def __processVideo(self, videoDict: dict) -> None:
         # Gets OPUS audio streams for discord.py
