@@ -6,14 +6,14 @@ import constants
 class Symphony:
     def __init__(self):
         ydlOpts = {
-            'format': '251/250/249/bestaudio',
+            'format': 'bestaudio',
             'quiet': True}
-        self.ytdl = youtube_dl.YoutubeDL(ydlOpts)
+        self.__ytdl = youtube_dl.YoutubeDL(ydlOpts)
 
-        self.queue = []
+        self.__queue = []
 
-    def processQueue(self, url):
-        videoInfo = self.ytdl.extract_info(url, download=False)
+    def processQueue(self, url: str) -> list:
+        videoInfo = self.__ytdl.extract_info(url, download=False)
 
         if '_type' in videoInfo:
             for entry in videoInfo['entries']:
@@ -21,18 +21,24 @@ class Symphony:
         else:
             self.__processVideo(videoInfo)
 
-        return self.queue
+        return self.__queue
 
     def __processVideo(self, videoDict: dict) -> None:
         # Gets OPUS audio streams for discord.py
         audioOpusFormat = []
 
         for audioFormat in videoDict['formats']:
-            if audioFormat['acodec'] == 'opus':
-                audioOpusFormat.append(audioFormat)
+            try:
+                # YT Streams
+                if audioFormat['acodec'] == 'opus':
+                    audioOpusFormat.append(audioFormat)
+            except KeyError:
+                # Soundcloud Streams
+                if audioFormat['ext'] == 'opus':
+                    audioOpusFormat.append(audioFormat)
 
         audioOpusFormat = sorted(
-            audioOpusFormat, key=lambda k: k['format_id'], reverse=True)
+            audioOpusFormat, key=lambda k: k['abr'], reverse=True)
 
         title = videoDict['title']
         pageURL = videoDict['webpage_url']
@@ -48,10 +54,11 @@ class Symphony:
             'thumbnailURL': thumbnailURL
         }
 
-        self.queue.append(videoInfo)
+        self.__queue.append(videoInfo)
 
 
 if __name__ == "__main__":
     symphony = Symphony()
-    ytVid = symphony.processQueue(constants.TEST_YT_URL)
-    print(ytVid)
+    queue = symphony.processQueue(constants.TEST_YT_URL)
+    # queue = symphony.processQueue(constants.TEST_SC_URL)
+    print(queue)
