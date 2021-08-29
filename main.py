@@ -1,12 +1,9 @@
-from discord.ext import commands
-<<<<<<< HEAD
-from discord.ext.commands.core import Command
-=======
->>>>>>> cbb8c3be6b6195d691ea03c97d6dc24aa61bf9d2
-
-from symphony import Symphony
-import utils
 import constants
+import utils
+from symphony import Symphony
+from discord.ext.commands.core import Command
+from discord.ext import commands
+
 
 symphony = Symphony()
 client = commands.Bot(command_prefix='$', case_insensitive=True)
