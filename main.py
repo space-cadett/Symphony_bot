@@ -1,5 +1,8 @@
 from discord.ext import commands
+<<<<<<< HEAD
 from discord.ext.commands.core import Command
+=======
+>>>>>>> cbb8c3be6b6195d691ea03c97d6dc24aa61bf9d2
 
 from symphony import Symphony
 import utils
