@@ -1,7 +1,6 @@
 import constants
 import utils
 from symphony import Symphony
-from discord.ext.commands.core import Command
 from discord.ext import commands
 
 
