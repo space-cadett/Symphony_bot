@@ -1,3 +1,5 @@
+import datetime
+
 import discord
 
 
@@ -25,11 +27,10 @@ def spotifySongName():
 
 
 def __formatTime(timeInSeconds: int) -> str:
-    hours = timeInSeconds // 3600
-    minutes = (timeInSeconds % 3600) // 60
-    seconds = timeInSeconds % 60
+    timeStr = str(datetime.timedelta(seconds=timeInSeconds))
+    time = timeStr.split(':')
 
-    if hours == 0:
-        return f'{minutes}:{seconds}'
+    if time[0] == '0':
+        return ':'.join(time[1:])
     else:
-        return f'{hours}:{minutes}:{seconds}'
+        return ':'.join(time)
