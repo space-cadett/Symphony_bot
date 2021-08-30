@@ -12,6 +12,11 @@ symphony = Symphony()
 client = commands.Bot(command_prefix='$', case_insensitive=True)
 startTime = time.time()
 
+FFMpegOptions = {
+    'options': '-vn',
+    "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
+}
+
 
 @client.event
 async def on_ready():
@@ -48,7 +53,8 @@ async def play(ctx, args):
         embeddedMsg = utils.addedToQueueEmbed(videoInfo, ctx.author.avatar_url)
         await ctx.send(embed=embeddedMsg)
 
-        currentChannel.play(FFmpegOpusAudio(videoInfo['streamURL']))
+        currentChannel.play(
+            FFmpegOpusAudio(videoInfo['streamURL'], **FFMpegOptions))
     else:
         await join(ctx)
         if ctx.voice_client is None:
@@ -67,6 +73,12 @@ async def queue(ctx):
                 description='Print bot status')
 async def status(ctx):
     # TODO print bot name, latency, uptime, etc
+    pass
+
+
+@client.command(name='shutdown')
+async def shutdown(ctx):
+    # Check if admins, sys.exit()
     pass
 
 
