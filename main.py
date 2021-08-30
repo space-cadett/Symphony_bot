@@ -51,7 +51,10 @@ async def play(ctx, args):
         currentChannel.play(FFmpegOpusAudio(videoInfo['streamURL']))
     else:
         await join(ctx)
-        await play(ctx, args)
+        if ctx.voice_client is None:
+            return
+        else:
+            await play(ctx, args)
 
 
 @client.command(name='queue', description='Show current queue')
